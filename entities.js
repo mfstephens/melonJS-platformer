@@ -10,6 +10,7 @@ var PlayerEntity = me.ObjectEntity.extend({
     ------ */
 
     init: function(x, y, settings) {
+        console.log(this);
         // call the constructor
         this.parent(x, y, settings);
 
@@ -32,6 +33,16 @@ var PlayerEntity = me.ObjectEntity.extend({
 
         this.doubleJumping = false;
 
+    },
+
+    die: function () {
+        alert('poop');
+    },
+
+    handleFallOffMap: function () {
+        if (this.pos.y > 500) {
+            this.die();
+        }
     },
 
     jump: function () {
@@ -108,6 +119,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
 
         this.updateAnimation();
+        this.handleFallOffMap();
 
 
         // check & update player movement
