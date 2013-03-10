@@ -27,10 +27,6 @@ var PlayerEntity = me.ObjectEntity.extend({
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,10,10,10,10,11,13,10,11,13], 5);
 
-        // horizontal speed at start of a jump
-        this.jumpingVelocity = 0;
-        // acceleration while in air
-        this.jumpingAcceleration = 3;
         this.doubleJumping = false;
 
     },
@@ -61,11 +57,10 @@ var PlayerEntity = me.ObjectEntity.extend({
 
     updateInAir: function () {
         if (me.input.isKeyPressed('left')) {
-            this.jumpingVelocity -= this.jumpingAcceleration * me.timer.tick;
+            this.vel.x -= this.accel.x * me.timer.tick;
         } else if (me.input.isKeyPressed('right')) {
-            this.jumpingVelocity += this.jumpingAcceleration * me.timer.tick;
+            this.vel.x += this.accel.x * me.timer.tick;
         }
-        this.vel.x = this.jumpingVelocity;
 
         if (me.input.isKeyPressed('jump') && !this.doubleJumping) {
             this.jump();
@@ -91,7 +86,6 @@ var PlayerEntity = me.ObjectEntity.extend({
             // make sure we are not already jumping or falling
             if (!this.jumping && !this.falling) {
                 // horizontal speed when we jumped.
-                this.jumpingVelocity = this.vel.x;
                 this.jump();
             }
         }
