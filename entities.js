@@ -29,8 +29,18 @@ var PlayerEntity = me.ObjectEntity.extend({
 
         // horizontal speed at start of a jump
         this.jumpingVelocity = 0;
+        // acceleration while in air
         this.jumpingAcceleration = 3;
+        this.doubleJumping = false;
 
+    },
+
+    jump: function () {
+        // set current vel to the maximum defined value
+        // gravity will then do the rest
+        this.vel.y = -this.maxVel.y * me.timer.tick;
+        // set the jumping flag
+        this.jumping = true;
     },
 
     //update animation
@@ -56,6 +66,11 @@ var PlayerEntity = me.ObjectEntity.extend({
             this.jumpingVelocity =+ this.jumpingAcceleration * me.timer.tick;
         }
         this.vel.x = this.jumpingVelocity;
+
+        if (me.input.isKeyPressed('jump') && !this.doubleJumping) {
+            this.jump();
+            this.doubleJumping = true;
+        }
     },
 
     updateOnGround: function () {
@@ -77,11 +92,7 @@ var PlayerEntity = me.ObjectEntity.extend({
             if (!this.jumping && !this.falling) {
                 // horizontal speed when we jumped.
                 this.jumpingVelocity = this.vel.x;
-                // set current vel to the maximum defined value
-                // gravity will then do the rest
-                this.vel.y = -this.maxVel.y * me.timer.tick;
-                // set the jumping flag
-                this.jumping = true;
+                this.jump();
             }
         }
     },
@@ -95,6 +106,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         if (this.jumping || this.falling) {
             this.updateInAir();
         } else {
+            this.doubleJumping = false;
             this.updateOnGround();
         }
 
