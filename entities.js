@@ -63,7 +63,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         if (me.input.isKeyPressed('left')) {
             this.jumpingVelocity -= this.jumpingAcceleration * me.timer.tick;
         } else if (me.input.isKeyPressed('right')) {
-            this.jumpingVelocity =+ this.jumpingAcceleration * me.timer.tick;
+            this.jumpingVelocity += this.jumpingAcceleration * me.timer.tick;
         }
         this.vel.x = this.jumpingVelocity;
 
