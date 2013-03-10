@@ -1,21 +1,21 @@
-/*------------------- 
+/*-------------------
 a player entity
 -------------------------------- */
 var PlayerEntity = me.ObjectEntity.extend({
- 
+
     /* -----
- 
+
     constructor
- 
+
     ------ */
- 
+
     init: function(x, y, settings) {
         // call the constructor
         this.parent(x, y, settings);
- 
+
         // set the default horizontal & vertical speed (accel vector)
         this.setVelocity(3, 20);
- 
+
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
@@ -26,7 +26,11 @@ var PlayerEntity = me.ObjectEntity.extend({
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,10,10,10,10,11,13,10,11,13], 5);
- 
+
+        // horizontal speed at start of a jump
+        this.jumpingVelocity = 0;
+        this.jumpingAcceleration = 3;
+
     },
 
     //update animation
@@ -44,13 +48,17 @@ var PlayerEntity = me.ObjectEntity.extend({
             this.setCurrentAnimation("jump");
         }
     },
- 
-    /* -----
- 
-    update the player pos
- 
-    ------ */
-    update: function() {
+
+    updateInAir: function () {
+        if (me.input.isKeyPressed('left')) {
+            this.jumpingVelocity -= this.jumpingAcceleration * me.timer.tick;
+        } else if (me.input.isKeyPressed('right')) {
+            this.jumpingVelocity =+ this.jumpingAcceleration * me.timer.tick;
+        }
+        this.vel.x = this.jumpingVelocity;
+    },
+
+    updateOnGround: function () {
         if (me.input.isKeyPressed('left')) {
             // flip the sprite on horizontal axis
             this.flipX(true);
@@ -67,6 +75,8 @@ var PlayerEntity = me.ObjectEntity.extend({
         if (me.input.isKeyPressed('jump')) {
             // make sure we are not already jumping or falling
             if (!this.jumping && !this.falling) {
+                // horizontal speed when we jumped.
+                this.jumpingVelocity = this.vel.x;
                 // set current vel to the maximum defined value
                 // gravity will then do the rest
                 this.vel.y = -this.maxVel.y * me.timer.tick;
@@ -74,6 +84,20 @@ var PlayerEntity = me.ObjectEntity.extend({
                 this.jumping = true;
             }
         }
+    },
+
+    /* -----
+
+    update the player pos
+
+    ------ */
+    update: function() {
+        if (this.jumping || this.falling) {
+            this.updateInAir();
+        } else {
+            this.updateOnGround();
+        }
+
         this.updateAnimation();
 
 
@@ -82,5 +106,5 @@ var PlayerEntity = me.ObjectEntity.extend({
         this.parent(this);
         return true;
     }
- 
+
 });
