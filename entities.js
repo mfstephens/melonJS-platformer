@@ -45,14 +45,6 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
     },
 
-    jump: function () {
-        // set current vel to the maximum defined value
-        // gravity will then do the rest
-        this.vel.y = -this.maxVel.y * me.timer.tick;
-        // set the jumping flag
-        this.jumping = true;
-    },
-
     //update animation
     updateAnimation: function(){
         if(this.vel.x === 0){
@@ -77,7 +69,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
 
         if (me.input.isKeyPressed('jump') && !this.doubleJumping) {
-            this.jump();
+            this.forceJump();
             this.doubleJumping = true;
         }
     },
@@ -100,7 +92,7 @@ var PlayerEntity = me.ObjectEntity.extend({
             // make sure we are not already jumping or falling
             if (!this.jumping && !this.falling) {
                 // horizontal speed when we jumped.
-                this.jump();
+                this.doJump();
             }
         }
     },
