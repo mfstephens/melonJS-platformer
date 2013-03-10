@@ -24,6 +24,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         this.addAnimation("stand", [10,10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
+                                    10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,10,10,10,10,11,13,10,11,13], 5);
  
     },
@@ -34,6 +35,9 @@ var PlayerEntity = me.ObjectEntity.extend({
             this.setCurrentAnimation("stand");
         }
         else{
+            if(this.getCurrentAnimationFrame() == 9){
+                this.current.idx = 0;
+            }
             this.setCurrentAnimation("walk");
         }
         if(this.jumping || this.falling){
@@ -47,7 +51,6 @@ var PlayerEntity = me.ObjectEntity.extend({
  
     ------ */
     update: function() {
-        this.updateAnimation();
         if (me.input.isKeyPressed('left')) {
             // flip the sprite on horizontal axis
             this.flipX(true);
@@ -71,6 +74,8 @@ var PlayerEntity = me.ObjectEntity.extend({
                 this.jumping = true;
             }
         }
+        this.updateAnimation();
+
 
         // check & update player movement
         this.updateMovement();
