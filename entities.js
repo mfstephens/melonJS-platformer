@@ -19,19 +19,18 @@ var PlayerEntity = me.ObjectEntity.extend({
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
-        this.addAnimation("walk", [0,1,2,3,4,5,8,9], 1);
-        this.addAnimation("jump", [12], 5);
-        this.addAnimation("stand", [10]);
-
-        this.setCurrentAnimation("walk");
-        console.log("poop");
-
+        this.addAnimation("walk", [0,1,2,3,4,5,6,7,8,9], 2);
+        this.addAnimation("jump", [12]);
+        this.addAnimation("stand", [10,10,10,10,10,10,10,10,
+                                    10,10,10,10,10,10,10,
+                                    10,10,10,10,10,10,10,
+                                    10,10,10,10,10,10,10,10,10,10,10,11,13,10,11,13], 5);
  
     },
 
     //update animation
     updateAnimation: function(){
-        if(this.vel.x == 0){
+        if(this.vel.x === 0){
             this.setCurrentAnimation("stand");
         }
         else{
