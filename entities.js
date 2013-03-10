@@ -14,18 +14,21 @@ var PlayerEntity = me.ObjectEntity.extend({
         this.parent(x, y, settings);
 
         // set the default horizontal & vertical speed (accel vector)
-        this.setVelocity(3, 20);
+        this.setVelocity(4, 16);
+
+        this.updateColRect(17,40,-1,0);
 
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
         this.addAnimation("walk", [0,1,2,3,4,5,6,7,8,9], 2);
         this.addAnimation("jump", [12]);
-        this.addAnimation("stand", [10,10,10,10,10,10,10,10,
+        this.addAnimation("stand", [10,11,13,10,11,13,10,
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
-                                    10,10,10,10,10,10,10,10,10,10,10,11,13,10,11,13], 5);
+                                    10,10,10,10,10,10,10,
+                                    10,10,10,10,10,10], 5);
 
         this.doubleJumping = false;
 
@@ -45,8 +48,8 @@ var PlayerEntity = me.ObjectEntity.extend({
             this.setCurrentAnimation("stand");
         }
         else{
-            if(this.getCurrentAnimationFrame() == 9){
-                this.current.idx = 0;
+            if(this.getCurrentAnimationFrame() === 9){
+                this.setAnimationFrame(0);
             }
             this.setCurrentAnimation("walk");
         }

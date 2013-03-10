@@ -79,4 +79,5 @@ var PlayScreen = me.ScreenObject.extend({
 //bootstrap :)
 window.onReady(function() {
     jsApp.onload();
+   	//me.debug.renderHitBox = true;
 });
