@@ -37,10 +37,11 @@ var PlayerEntity = me.ObjectEntity.extend({
 
     die: function () {
         alert('poop');
+        this.alive = false;
     },
 
     handleFallOffMap: function () {
-        if (this.pos.y > 500) {
+        if (this.pos.y > 500 && this.alive) {
             this.die();
         }
     },
