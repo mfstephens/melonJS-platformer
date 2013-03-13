@@ -1,11 +1,40 @@
 // game resources
 var g_resources = [
 	{name: "ground2", type: "image", src: "data/ground2.png"}, 
+	{name: "gameover", type: "image", src: "data/other/gameover.png"}, 
+	{name: "heart", type: "image", src: "data/other/heart_1.png"}, 
 	{name: "metatiles", type: "image", src: "data/metatiles.png"},
 	{name: "area01", type: "tmx", src: "data/area01.tmx"},
+	{name: "game_over", type: "tmx", src: "data/game_over.tmx"},
 	{name: "character", type: "image", src: "data/character.png"}
 ];
+
+/*--------------
+a score HUD Item
+--------------------- */
  
+var LivesObject = me.HUD_Item.extend({
+    init: function() {
+        // call the parent constructor
+        this.parent();
+        // create a font
+        this.value=2;
+    },
+ 
+    /* -----
+ 
+    draw our score
+ 
+    ------ */
+    draw: function(context, x, y) {
+    	  for(var i=0;i<this.value;i++){
+	    	  this.img = new me.SpriteObject (i*70, 10, me.loader.getImage("heart"));
+	        this.img.draw(context);
+	      }
+    }
+ 
+});
+
 var jsApp = {
     /* ---
  
@@ -22,7 +51,7 @@ var jsApp = {
 
         // initialize the "sound engine"
 		me.audio.init("mp3,ogg");
- 
+ 			me.gameOver=false;
         // set all resources to be loaded
         me.loader.onload = this.loaded.bind(this);
  
@@ -41,7 +70,7 @@ var jsApp = {
     loaded: function ()
 	{
 	   // set the "Play/Ingame" Screen Object
-	   me.state.set(me.state.PLAY, new PlayScreen());
+	   var my_screen=me.state.set(me.state.PLAY, new PlayScreen());
 	     
 	   // add our player entity in the entity pool
 	   me.entityPool.add("mainPlayer", PlayerEntity);
@@ -49,8 +78,7 @@ var jsApp = {
 	   // enable the keyboard
 	   me.input.bindKey(me.input.KEY.LEFT,  "left");
 	   me.input.bindKey(me.input.KEY.RIGHT, "right");
-	   me.input.bindKey(me.input.KEY.X,     "jump", true);
-	      
+	   me.input.bindKey(me.input.KEY.UP,     "jump", true);
 	   // start the game 
 	   me.state.change(me.state.PLAY);
 	}
@@ -62,7 +90,12 @@ var PlayScreen = me.ScreenObject.extend({
  
     onResetEvent: function() {
         // stuff to reset on state change
-        // load a level
+                me.game.addHUD(0, 0);
+ 
+        // add a new HUD item
+        me.game.HUD.addItem("lives", new LivesObject());
+ 
+        // load a level       
         me.levelDirector.loadLevel("area01");
     },
  

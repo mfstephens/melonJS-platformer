@@ -10,10 +10,11 @@ var PlayerEntity = me.ObjectEntity.extend({
     ------ */
 
     init: function(x, y, settings) {
+    
         console.log(this);
         // call the constructor
         this.parent(x, y, settings);
-
+			
         // set the default horizontal & vertical speed (accel vector)
         this.setVelocity(4, 16);
 
@@ -36,12 +37,23 @@ var PlayerEntity = me.ObjectEntity.extend({
     },
 
     die: function () {
-        alert('poop');
-        this.alive = false;
+    if(me.gameOver){me.levelDirector.loadLevel("game_over");}
+		 var l=me.game.HUD.getItemValue("lives");
+
+		 if(l>0){
+		 	me.game.HUD.updateItemValue("lives",-1);
+		 	me.levelDirector.loadLevel("area01");
+		 }  
+		 	else{
+		 	  me.game.disableHUD();
+		 	  me.gameOver=true;
+		     me.levelDirector.loadLevel("game_over");
+		   }
+		   
     },
 
     handleFallOffMap: function () {
-        if (this.pos.y > 500 && this.alive) {
+        if (this.pos.y > 500) {
             this.die();
         }
     },
