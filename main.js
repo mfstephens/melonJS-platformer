@@ -1,4 +1,4 @@
-// game resources
+//game resources
 var g_resources = [
 	{name: "ground_tiles", type: "image", src: "data/ground_tiles.png"}, 
 	{name: "gameover", type: "image", src: "data/other/gameover.png"}, 
@@ -12,10 +12,7 @@ var g_resources = [
     {name: "outdoor_sound", type: "audio", src: "data/audio/", channel: 2}
 ];
 
-/*--------------
-a score HUD Item
---------------------- */
- 
+//score hud item 
 var LivesObject = me.HUD_Item.extend({
     init: function() {
         // call the parent constructor
@@ -48,7 +45,7 @@ var jsApp = {
  
         // init the video
         if (!me.video.init('jsapp', 800, 600, false, 1.0)) {
-            alert("Sorry but your browser does not support html 5 canvas.");
+            alert("Sorry, but your browser does not support html 5 canvas.");
             return;
         }
 

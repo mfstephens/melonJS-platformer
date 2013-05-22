@@ -1,21 +1,9 @@
-/*-------------------
-a player entity
---------------------------------*/
 var PlayerEntity = me.ObjectEntity.extend({
 
-    /* -----
-
-    constructor
-
-    ------ */
-
+	//constructor
     init: function(x, y, settings) {
-<<<<<<< HEAD
-    
-=======
 
-        console.log(this);
->>>>>>> 1618b3faae995981552f153dc8decd1cd05db08e
+
         // call the constructor
         this.parent(x, y, settings);
 
@@ -29,7 +17,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         me.game.viewport.setDeadzone( me.game.viewport.width / 10,
                                       me.game.viewport.height);
 
-        //this.resize(.78);
+        this.resize(.78);
 
         this.addAnimation("walk", [0,1,2,3,4,5,6,7,8,9], 2);
         this.addAnimation("jump", [12]);
@@ -39,10 +27,7 @@ var PlayerEntity = me.ObjectEntity.extend({
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10], 4);
-
         this.doubleJumping = false;
-
-
     },
 
     die: function () {
@@ -67,7 +52,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
     },
 
-    //update animation
+    //update animatio
     updateAnimation: function(){
         if(this.vel.x === 0){
             this.setCurrentAnimation("stand");
@@ -118,11 +103,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
     },
 
-    /* -----
-
-    update the player pos
-
-    ------ */
+    //update player position
     update: function() {
         if (this.jumping || this.falling) {
             this.updateInAir();
