@@ -1,6 +1,6 @@
 /*-------------------
 a player entity
--------------------------------- */
+--------------------------------*/
 var PlayerEntity = me.ObjectEntity.extend({
 
     /* -----
@@ -11,17 +11,20 @@ var PlayerEntity = me.ObjectEntity.extend({
 
     init: function(x, y, settings) {
     
-        console.log(this);
         // call the constructor
         this.parent(x, y, settings);
 			
         // set the default horizontal & vertical speed (accel vector)
         this.setVelocity(4, 16);
 
-        this.updateColRect(17,40,-1,0);
+        this.updateColRect(17,45,-1,0);
 
         // set the display to follow our position on both axis
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
+        me.game.viewport.setDeadzone( me.game.viewport.width / 10,
+                                      me.game.viewport.height);
+
+        //this.resize(.78);
 
         this.addAnimation("walk", [0,1,2,3,4,5,6,7,8,9], 2);
         this.addAnimation("jump", [12]);
@@ -30,9 +33,10 @@ var PlayerEntity = me.ObjectEntity.extend({
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
                                     10,10,10,10,10,10,10,
-                                    10,10,10,10,10,10], 5);
+                                    10,10,10,10,10,10,10], 4);
 
         this.doubleJumping = false;
+
 
     },
 
@@ -52,7 +56,7 @@ var PlayerEntity = me.ObjectEntity.extend({
 		   
     },
 
-    handleFallOffMap: function () {
+    handleFallOffMap: function() {
         if (this.pos.y > 500) {
             this.die();
         }
@@ -77,11 +81,13 @@ var PlayerEntity = me.ObjectEntity.extend({
     updateInAir: function () {
         if (me.input.isKeyPressed('left')) {
             this.vel.x -= this.accel.x * me.timer.tick;
-        } else if (me.input.isKeyPressed('right')) {
+        }
+        else if (me.input.isKeyPressed('right')) {
             this.vel.x += this.accel.x * me.timer.tick;
         }
 
         if (me.input.isKeyPressed('jump') && !this.doubleJumping) {
+        	me.audio.play("jump", false, function() {}, .7);
             this.forceJump();
             this.doubleJumping = true;
         }
@@ -89,22 +95,19 @@ var PlayerEntity = me.ObjectEntity.extend({
 
     updateOnGround: function () {
         if (me.input.isKeyPressed('left')) {
-            // flip the sprite on horizontal axis
             this.flipX(true);
-            // update the entity velocity
             this.vel.x -= this.accel.x * me.timer.tick;
-        } else if (me.input.isKeyPressed('right')) {
-            // unflip the sprite
+        }
+        else if (me.input.isKeyPressed('right')) {
             this.flipX(false);
-            // update the entity velocity
             this.vel.x += this.accel.x * me.timer.tick;
-        } else {
+        }
+        else {
             this.vel.x = 0;
         }
         if (me.input.isKeyPressed('jump')) {
-            // make sure we are not already jumping or falling
             if (!this.jumping && !this.falling) {
-                // horizontal speed when we jumped.
+	        	me.audio.play("jump", false, function() {}, .7);
                 this.doJump();
             }
         }
@@ -118,7 +121,8 @@ var PlayerEntity = me.ObjectEntity.extend({
     update: function() {
         if (this.jumping || this.falling) {
             this.updateInAir();
-        } else {
+        }
+        else {
             this.doubleJumping = false;
             this.updateOnGround();
         }

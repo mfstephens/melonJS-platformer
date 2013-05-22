@@ -1,12 +1,15 @@
 // game resources
 var g_resources = [
-	{name: "ground2", type: "image", src: "data/ground2.png"}, 
+	{name: "ground_tiles", type: "image", src: "data/ground_tiles.png"}, 
 	{name: "gameover", type: "image", src: "data/other/gameover.png"}, 
 	{name: "heart", type: "image", src: "data/other/heart_1.png"}, 
 	{name: "metatiles", type: "image", src: "data/metatiles.png"},
 	{name: "area01", type: "tmx", src: "data/area01.tmx"},
+    {name: "sky_backdrop", type: "image", src: "data/sky_backdrop.png"},
 	{name: "game_over", type: "tmx", src: "data/game_over.tmx"},
-	{name: "character", type: "image", src: "data/character.png"}
+	{name: "character", type: "image", src: "data/character.png"},
+    {name: "jump", type: "audio", src: "data/audio/", channel: 1},
+    {name: "outdoor_sound", type: "audio", src: "data/audio/", channel: 2}
 ];
 
 /*--------------
@@ -49,9 +52,13 @@ var jsApp = {
             return;
         }
 
+
+        me.video.scale(me.video.getScreenContext(), 1);
+
         // initialize the "sound engine"
 		me.audio.init("mp3,ogg");
- 			me.gameOver=false;
+
+ 		me.gameOver=false;
         // set all resources to be loaded
         me.loader.onload = this.loaded.bind(this);
  
@@ -60,6 +67,7 @@ var jsApp = {
  
         // load everything & display a loading screen
         me.state.change(me.state.LOADING);
+
     },
  
     /* ---
@@ -71,14 +79,14 @@ var jsApp = {
 	{
 	   // set the "Play/Ingame" Screen Object
 	   var my_screen=me.state.set(me.state.PLAY, new PlayScreen());
-	     
+
 	   // add our player entity in the entity pool
 	   me.entityPool.add("mainPlayer", PlayerEntity);
-	             
+
 	   // enable the keyboard
-	   me.input.bindKey(me.input.KEY.LEFT,  "left");
+	   me.input.bindKey(me.input.KEY.LEFT, "left");
 	   me.input.bindKey(me.input.KEY.RIGHT, "right");
-	   me.input.bindKey(me.input.KEY.UP,     "jump", true);
+	   me.input.bindKey(me.input.KEY.UP, "jump", true);
 	   // start the game 
 	   me.state.change(me.state.PLAY);
 	}
@@ -90,7 +98,9 @@ var PlayScreen = me.ScreenObject.extend({
  
     onResetEvent: function() {
         // stuff to reset on state change
-                me.game.addHUD(0, 0);
+        me.game.addHUD(0, 0);
+
+        me.audio.play("outdoor_sound", true);
  
         // add a new HUD item
         me.game.HUD.addItem("lives", new LivesObject());
