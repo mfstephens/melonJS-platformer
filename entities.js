@@ -17,7 +17,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         me.game.viewport.setDeadzone( me.game.viewport.width / 10,
                                       me.game.viewport.height);
 
-        this.resize(.78);
+        //this.resize(.78);
 
         this.addAnimation("walk", [0,1,2,3,4,5,6,7,8,9], 2);
         this.addAnimation("jump", [12]);
@@ -52,7 +52,7 @@ var PlayerEntity = me.ObjectEntity.extend({
         }
     },
 
-    //update animatio
+    //update animation
     updateAnimation: function(){
         if(this.vel.x === 0){
             this.setCurrentAnimation("stand");
