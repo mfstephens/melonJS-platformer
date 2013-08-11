@@ -18,7 +18,7 @@ var LivesObject = me.HUD_Item.extend({
         // call the parent constructor
         this.parent();
         // create a font
-        this.value=2;
+        this.value=0;
     },
  
     /* -----
@@ -27,10 +27,8 @@ var LivesObject = me.HUD_Item.extend({
  
     ------ */
     draw: function(context, x, y) {
-    	  for(var i=0;i<this.value;i++){
-	    	  this.img = new me.SpriteObject (i*70, 10, me.loader.getImage("heart"));
-	        this.img.draw(context);
-	      }
+        this.text= new me.Font("Courier", 20, "black");
+        this.text.draw(context, "Deaths: " + this.value, 5, 30);
     }
  
 });

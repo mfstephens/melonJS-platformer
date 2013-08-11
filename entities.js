@@ -31,19 +31,8 @@ var PlayerEntity = me.ObjectEntity.extend({
     },
 
     die: function () {
-        if (me.gameOver) {
-            me.levelDirector.loadLevel("game_over");
-        }
-        var lives = me.game.HUD.getItemValue("lives");
-
-        if (lives > 0) {
-            me.game.HUD.updateItemValue("lives", -1);
-            me.levelDirector.loadLevel("area01");
-        } else {
-            me.game.disableHUD();
-            me.gameOver = true;
-            me.levelDirector.loadLevel("game_over");
-        }
+        me.game.HUD.updateItemValue("lives", 1);
+        me.levelDirector.loadLevel("area01");
     },
 
     handleFallOffMap: function() {
